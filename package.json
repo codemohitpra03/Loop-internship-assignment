@@ -1,0 +1,18 @@
+{
+  "name": "store-monitoring",
+  "version": "1.0.0",
+  "description": "APIs for store-monitoring",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mohit Kanojia",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "import-meta-resolve": "^3.0.0",
+    "nodemon": "^2.0.22",
+    "pg": "^8.11.1"
+  },
+  "type": "module"
+}
