@@ -10,11 +10,13 @@ const get_report_id=()=>{
 export const trigger = async(req,res) =>{
     try {
         runningStatus = 'running';
+        done=false;
         const result = await db.query(query);
         
         runningStatus = 'completed';
         report_id=get_report_id();
-        res.status(200).json({report_id})
+        done=true;
+        res.status(200).json({status:'ok',report_id:report_id})
     } catch (error) {
         runningStatus = 'interrupted';
         console.error('Error executing query:', error);
@@ -24,21 +26,22 @@ export const trigger = async(req,res) =>{
 
 export const get_store_report = async(req,res) =>{
     
-    if(req.params.id!==report_id){
-        return res.status(500).json({error:"Wrong report id"})
-    }
+    
     if(!done){
-        res.status(200).json({status:runningStatus})
-    }
-    try {
-        const result = await db.query('select * from result order by store_id;')
-        done=true;
-        console.log(result);
-        res.status(200).json({status:runningStatus,result:result.rows})
-    } catch (error) {
-       
-        console.error('Error executing query:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(200).json({status:runningStatus})
+        
+    }else{
+
+        try {
+            const result = await db.query('select * from result order by store_id;')
+            done=true;
+            console.log(result);
+            return res.status(200).json({status:runningStatus,result:result.rows})
+        } catch (error) {
+           
+            console.error('Error executing query:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
     }
 
 }
